@@ -46,15 +46,15 @@ def lerSaldo():
             if str(operacao)=='D':
                 valor = float(linha[2:len(linha)-1])
                 saldo -= valor
-                medD = valor
-                i += 1
             elif str(operacao)=='C':
                 valor = float(linha[2:len(linha)-1])
                 saldo += valor
-                medC = valor
-                j += 1
     arq.close()
     return saldo
+
+def saldo():
+    saldo = lerSaldo()
+    print 'O saldo da conta : '+str(saldo)
 
 def deposito():
     print 'Digite o valor a ser depositado: \n'
@@ -93,6 +93,46 @@ def extrato():
         for linha in arq:
             print linha
 
+def mediaC():
+    medC = i = 0.0
+    arq = open('%s.txt' %cpf, 'r')
+    firstLine = True
+    for linha in arq:
+        if firstLine:
+            firstLine = False
+        else:
+            operacao = linha[0:1]
+            if str(operacao)=='C':
+                valor = float(linha[2:len(linha)-1])
+                medC += valor
+                i += 1
+    arq.close()
+    if i == 0:
+        print "Nao existe Creditos na Conta! "
+    else:
+        mediC = medC/i
+        print "Media dos Creditos: ", mediC
+
+def mediaD():
+    medD = j = 0.0
+    arq = open('%s.txt' %cpf, 'r')
+    firstLine = True
+    for linha in arq:
+        if firstLine:
+            firstLine = False
+        else:
+            operacao = linha[0:1]
+            if str(operacao)=='D':
+                valor = float(linha[2:len(linha)-1])
+                medD += valor
+                j += 1
+    arq.close()
+    if j == 0:
+        print "Nao existe Debitos na Conta!"
+    else:
+        mediD = medD/j
+        print "Media dos Debitos: ", mediD
+
 def printMenu():
     print ('Digite 1 Para Criar Nova Conta\n')
     print ('Digite 2 Para Encerrar Conta\n')
@@ -118,33 +158,21 @@ def subMenu():
         if op2 == 2:
             saque()
         if op2 == 3:
-            saldo = lerSaldo()
-            print 'O saldo da conta : '+str(saldo)
+            saldo()
         if op2 == 4:
             transferencia()
         if op2 == 5:
             extrato()
         if op2 == 6:
-            o = medC/j
-            if o != 0:
-                print "Media dos Creditos: ", o
-            else:
-                print "Nao existe creditos na conta! "
+            mediaC()
         if op2 == 7:
-            m = medD/i
-            if m != 0:
-                print "Media de Debitos: ", m
-            else:
-                print "Nao existe debitos na conta! "
+            mediaD()
         if op2 == 8:
             return
+        op2 = int(raw_input('Digite uma opcao do subMenu: '))
     print ('Volte Sempre')
     exit(0)
 
-medD = 0
-medC = 0
-j = 0
-i = 0
 print ('Bem Vindo ao Banco UAG \n')
 op = printMenu()
 while (op != 4):
@@ -159,9 +187,7 @@ while (op != 4):
                 subMenu()
         except IOError:
              print "Esse CPF ainda nao possui Conta! \n"
-             printMenu()
 
     op = printMenu()
-
 
 print ('Volte Sempre')
