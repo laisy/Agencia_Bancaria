@@ -1,19 +1,16 @@
 import os.path
 import os
-
 def criarConta():
     cpf = raw_input('Digite o CPF do cliente: \n')
     try:
          with open('%s.txt' %cpf, 'r') as f:
             print "Esse CPF ja possui uma conta! \n"
-            printMenu()
     except IOError:
          saldoInicial = raw_input('Digite o saldo inicial da conta: \n')
          arq = open('%s.txt' %cpf, 'w')
          arq.write(str(saldoInicial+'\n'))
          arq.close()
          print "Conta criada com Sucesso! \n"
-         printMenu()
 
 def encerrarConta():
     cpf = raw_input('Digite o CPF do cliente que deseja Encerrar a conta: \n')
@@ -22,10 +19,8 @@ def encerrarConta():
             print 'Ok'
         os.remove('%s.txt' %cpf)
         print "Conta Encerrada! \n"
-        printMenu()
     except IOError:
         print 'Conta nao Encontrada! \n'
-        printMenu()
 
 def escreverValor(valor):
     arq = open('%s.txt' %cpf, 'a')
@@ -67,13 +62,11 @@ def deposito():
     arq = open('%s.txt' %cpf, 'a')
     arq.write(str('d ' +str(valor)+'\n'))
     arq.close()
-    subMenu()
 
 def saque():
     print 'Digite o valor do saque: \n'
     valor = float(raw_input())
     escreverValor('s ' +str(valor)+'\n')
-    subMenu()
 
 def transferencia():
     arq = open('%s.txt' %cpf, 'a')
@@ -83,7 +76,6 @@ def transferencia():
     cpf2 = raw_input('Digite o CPF do cliente que recebera a transferencia: \n')
     if cpf == cpf2:
         print "Nao e permitido fazer transferencia para a mesma Conta! \n"
-        printMenu()
     else:
         try:
             with open('%s.txt' %cpf2, 'r') as f:
@@ -94,7 +86,6 @@ def transferencia():
                 print "Trasnferencia ocorreu com sucesso! \n"
         except IOError:
             print "Esse CPF ainda nao possui Conta! \n"
-            printMenu()
 
 def extrato():
     n = int(raw_input("Digite a partir de quantos lancamentos deseja ter o extrato: \n"))
@@ -120,8 +111,35 @@ def subMenu():
     print ('Digite 7 Para Ver a Media dos Debitos\n')
     print ('Digite 8 Para Retornar Menu\n')
     print ('Digite 9 Para Encerrar\n')
-    opcao2 = int(raw_input())
-    return opcao2
+    op2 = int(raw_input())
+    while(op2 != 9):
+        if op2 == 1:
+            deposito()
+        if op2 == 2:
+            saque()
+        if op2 == 3:
+            saldo = lerSaldo()
+            print 'O saldo da conta : '+str(saldo)
+        if op2 == 4:
+            transferencia()
+        if op2 == 5:
+            extrato()
+        if op2 == 6:
+            o = medC/j
+            if o != 0:
+                print "Media dos Creditos: ", o
+            else:
+                print "Nao existe creditos na conta! "
+        if op2 == 7:
+            m = medD/i
+            if m != 0:
+                print "Media de Debitos: ", m
+            else:
+                print "Nao existe debitos na conta! "
+        if op2 == 8:
+            return
+    print ('Volte Sempre')
+    exit(0)
 
 medD = 0
 medC = 0
@@ -137,38 +155,13 @@ while (op != 4):
     if op == 3:
         cpf = raw_input('Digite o CPF do cliente: \n')
         try:
-             with open('%s.txt' %cpf, 'r') as f:
-                 subMenu()
+            with open('%s.txt' %cpf, 'r') as f:
+                subMenu()
         except IOError:
              print "Esse CPF ainda nao possui Conta! \n"
              printMenu()
 
-op2 = subMenu()
-while(op2 != 9):
-    if op2 == 1:
-        deposito()
-    if op2 == 2:
-        saque()
-    if op2 == 3:
-        saldo = lerSaldo()
-        print 'O saldo da conta : '+str(saldo)
-    if op2 == 4:
-        transferencia()
-    if op2 == 5:
-        extrato()
-    if op2 == 6:
-        o = medC/j
-        if o != 0:
-            print "Media dos Creditos: ", o
-        else:
-            print "Nao existe creditos na conta! "
-    if op2 == 7:
-        m = medD/i
-        if m != 0:
-            print "Media de Debitos: ", m
-        else:
-            print "Nao existe debitos na conta! "
-    if op2 == 8:
-        printMenu()
+    op = printMenu()
+
 
 print ('Volte Sempre')
